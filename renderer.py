@@ -5,8 +5,9 @@ import numpy
 t.speed(0)
 t.ht()
 t.tracer(0,0)
+# object and renderer info
 focal = 200
-points = [  
+points = [ # vertex data for objects
     [
     [-50,-50,-50],
     [-50,-50,50],
@@ -29,7 +30,7 @@ points = [
     ]
     ]
 
-connections = [
+connections = [ # connection data for objects
     [
     [1,2],
     [2,3],
@@ -60,15 +61,16 @@ connections = [
     ]
     ]
 
+# renderer functions
 def clear():
     t.clear()
-    
+   
 def projectx(x,y,z,focal): #projection matrixes 
     return(x*focal)/(focal+z) 
 def projecty(x,y,z,focal):
     return(y*focal)/(focal+z)
 
-def rotatex(x,y,z,radian): #rotation matrix 
+def rotatex(x,y,z,radian): #rotation matrixs
     t
     
 def rendershape(xpos,ypos,zpos,yaw,pitch,roll,shape): #object renderer
