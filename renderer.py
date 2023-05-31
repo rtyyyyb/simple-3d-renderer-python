@@ -55,7 +55,7 @@ def rotate_for_z(x, y, z, yaw, pitch, roll):
 
 
 def next_frame():
-    time.sleep(0.005)
+    time.sleep(0.0166666)
     t.update()
     t.clear()
 
@@ -76,7 +76,7 @@ def render_object(x_pos, y_pos, z_pos, yaw, pitch, roll, points_list, connection
         temp_sub_points.append(rotate_for_z(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
         temp_points.append(temp_sub_points)
     for line in temp_connections:
-        if temp_points[line[0] - 1][2] >= -focal_length or temp_points[line[1] - 1][2] >= -focal_length:
+        if temp_points[line[0] - 1][2] >= -focal_length and temp_points[line[1] - 1][2] >= -focal_length:
             x1 = project_x(temp_points[line[0] - 1][0], temp_points[line[0] - 1][2], focal_length)
             y1 = project_y(temp_points[line[0] - 1][1], temp_points[line[0] - 1][2], focal_length)
             x2 = project_x(temp_points[line[1] - 1][0], temp_points[line[1] - 1][2], focal_length)

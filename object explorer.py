@@ -30,7 +30,7 @@ def render_cube(x, y, z):
     r.render_object(x*100, y*100, z*100, 0, 0, 0, cube_points, cube_connections)
 
 for i in range(100000):
-    r.set_camera_pos(i, 100, i, 0, 0, i/500, 200)
+    r.set_camera_pos(i, 100, i, 0, 0, 0, 200)
     for j in range(10):
         render_cube(j, 0, j)
     r.next_frame()
