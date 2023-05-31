@@ -2,7 +2,7 @@ import turtle as t
 import math as m
 import time
 
-
+# renderer functions
 t.speed(0)
 t.ht()
 t.tracer(0, 0)
@@ -15,7 +15,7 @@ cam_yaw = 0
 focal_length = 0
 
 
-def set_camera_pos(x, y, z, roll, pitch, yaw, focallength): #changes the position of the camera
+def set_camera_pos(x, y, z, roll, pitch, yaw, focallength):
     global cam_x
     global cam_y
     global cam_z
@@ -60,11 +60,11 @@ def next_frame():
     t.update()
     t.clear()
 
-    
+
 def render_object(x_pos, y_pos, z_pos, yaw, pitch, roll, points_list, connections_list):  # object renderer
     temp_points = []
     temp_connections = connections_list
-    for index in range(len(points_list)): # handles offset and rotation
+    for index in range(len(points_list)):
         temp_sub_points = []
         temp_x = rotate_for_x(points_list[index][0], points_list[index][1], points_list[index][2], yaw, pitch,
                               roll) + x_pos - cam_x
@@ -76,12 +76,12 @@ def render_object(x_pos, y_pos, z_pos, yaw, pitch, roll, points_list, connection
         temp_sub_points.append(rotate_for_y(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
         temp_sub_points.append(rotate_for_z(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
         temp_points.append(temp_sub_points)
-    for line in temp_connections: # projects and draws the wireframe
+    for line in temp_connections:
         x1 = project_x(temp_points[line[0] - 1][0], temp_points[line[0] - 1][2], focal_length)
         y1 = project_y(temp_points[line[0] - 1][1], temp_points[line[0] - 1][2], focal_length)
         x2 = project_x(temp_points[line[1] - 1][0], temp_points[line[1] - 1][2], focal_length)
         y2 = project_y(temp_points[line[1] - 1][1], temp_points[line[1] - 1][2], focal_length)
-        t.pu()         # draws a line based of x1 and 2 and y1 and 2
+        t.pu()
         t.goto(x1, y1)
         t.pd()
         t.goto(x2, y2)

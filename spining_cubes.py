@@ -27,6 +27,7 @@ cube_connections = [  # connection data for objects
 ]
 
 for i in range(100000):
+    r.set_camera_pos(0, 0, 0, 0, 0, 0, 200)
     posx = m.sin(i / 100) * 100
     posy = m.sin((i / 100) + 1.570795) * 100
     posz = m.sin(i / 100) * 100
