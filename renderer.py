@@ -1,127 +1,85 @@
 import turtle as t
 import math as m
 import time
-t.speed(0)
-t.ht()
-t.tracer(0,0)
-
-# object and renderer info
-focal = 200
-points = [ # vertex data for objects
-    [
-    [-50,-50,-50],
-    [-50,-50,50],
-    [50,-50,50],
-    [50,-50,-50],
-    [-50,50,-50],
-    [-50,50,50],
-    [50,50,50],
-    [50,50,-50]
-    ],
-    [
-    [200,100,100],
-    [200,100,200],
-    [200,100,100],
-    [200,100,100],
-    [200,200,100],
-    [200,200,200],
-    [200,200,100],
-    [200,200,100]
-    ]
-    ]
-
-connections = [ # connection data for objects
-    [
-    [1,2],
-    [2,3],
-    [3,4],
-    [4,1],
-    [5,6],
-    [6,7],
-    [7,8],
-    [8,5],
-    [5,1],
-    [6,2],
-    [7,3],
-    [8,4]
-    ],
-    [
-    [1,2],
-    [2,3],
-    [3,4],
-    [4,1],
-    [5,6],
-    [6,7],
-    [7,8],
-    [8,5],
-    [5,1],
-    [6,2],
-    [7,3],
-    [8,4]
-    ]
-    ]
 
 # renderer functions
-def clear():
-    t.clear()
-def update():
-    t.update()
-def projectx(x,z,focal): #projection matrixes
-    return(x*focal)/(focal+z) 
-def projecty(y,z,focal):
-    return(y*focal)/(focal+z)
+t.speed(0)
+t.ht()
+t.tracer(0, 0)
+cam_x = 0
+cam_y = 0
+cam_z = 0
+cam_pitch = 0
+cam_roll = 0
+cam_yaw = 0
+focal_length = 0
 
-def rotateforx(x,y,z,yaw,pitch,roll): #rotation matrixs yaw = y axis, pitch = x axis, roll = y axis
-    x = (x*m.cos(roll))-(y*m.sin(roll))
-    return (x*m.cos(yaw))+(z*m.sin(yaw))
-def rotatefory(x,y,z,yaw,pitch,roll):
-    y = (x*m.sin(roll))+(y*m.cos(roll))
-    return (y*m.cos(pitch))-(z*m.sin(pitch))
-def rotateforz(x,y,z,yaw,pitch,roll):
-    z = (y*m.sin(pitch))+(z*m.cos(pitch))
-    return (z*m.cos(yaw))-(x*m.sin(yaw))
 
-def rendershape(xpos,ypos,zpos,yaw,pitch,roll,shape): #object renderer
-    temppoints = []
-    tempconnections = connections[shape]
-    for index in range(len(points[shape])):
-        tempsubpoints = []
-        tempsubpoints.append(rotateforx(points[shape][index][0],points[shape][index][1],points[shape][index][2],yaw,pitch,roll) + xpos)
-        tempsubpoints.append(rotatefory(points[shape][index][0],points[shape][index][1],points[shape][index][2],yaw,pitch,roll) + ypos)
-        tempsubpoints.append(rotateforz(points[shape][index][0],points[shape][index][1],points[shape][index][2],yaw,pitch,roll) + zpos)
-        temppoints.append(tempsubpoints)
-    for line in tempconnections:
-        x1 = projectx(temppoints[line[0]-1][0],temppoints[line[0]-1][2],focal)
-        y1 = projecty(temppoints[line[0]-1][1],temppoints[line[0]-1][2],focal)
-        x2 = projectx(temppoints[line[1]-1][0],temppoints[line[1]-1][2],focal)
-        y2 = projecty(temppoints[line[1]-1][1],temppoints[line[1]-1][2],focal)
-        t.pu()
-        t.goto(x1,y1)
-        t.pd()
-        t.goto(x2,y2)
-#render code
-#for i in range(100000):
-    #clear()
-    #rendershape(180,0,0,i/100,0,0,0)
-    #rendershape(0,0,0,0,i/100,0,0)
-    #rendershape(-180,0,0,0,0,i/100,0)
-    #rendershape(0,0,0,1,1,0,0)
-    #time.sleep(0.005)
-    #t.update()
+def set_camera_pos(x, y, z, roll, pitch, yaw, focal_length):
+    global cam_x
+    global cam_y
+    global cam_z
+    global cam_pitch
+    global cam_roll
+    global cam_yaw
+    cam_x = x
+    cam_y = y
+    cam_z = z
+    cam_pitch = pitch
+    cam_roll = roll
+    cam_yaw = yaw
+    focal_length = focal_length
 
-for i in range(100000):
-    posx = m.sin(i/100)*100
-    posy = m.sin((i/100)+1.570795)*100
-    posz = m.sin(i/100)*100
-    clear()
-    rendershape(posx,posy,posz+50,0,i/100,0,0)
-    posx = m.sin(i/100+3.14159)*100
-    posy = m.sin((i/100+3.14159)+1.570795)*100
-    posz = m.sin(i/100+3.14159)*100
-    rendershape(posx,posy,posz+50,i/100,0,0,0)
+
+def project_x(x, z, focal):  # projection matrix's
+    return (x * focal) / (focal + z)
+
+
+def project_y(y, z, focal):
+    return (y * focal) / (focal + z)
+
+
+def rotate_for_x(x, y, z, yaw, pitch, roll):  # rotation matrix's yaw = y axis, pitch = x axis, roll = y axis
+    x = (x * m.cos(roll)) - (y * m.sin(roll))
+    return (x * m.cos(yaw)) + (z * m.sin(yaw))
+
+
+def rotate_for_y(x, y, z, yaw, pitch, roll):
+    y = (x * m.sin(roll)) + (y * m.cos(roll))
+    return (y * m.cos(pitch)) - (z * m.sin(pitch))
+
+
+def rotate_for_z(x, y, z, yaw, pitch, roll):
+    z = (y * m.sin(pitch)) + (z * m.cos(pitch))
+    return (z * m.cos(yaw)) - (x * m.sin(yaw))
+
+
+def next_frame():
     time.sleep(0.005)
     t.update()
-    
+    t.clear()
 
-
-
+def render_object(x_pos, y_pos, z_pos, yaw, pitch, roll, points_list, connections_list):  # object renderer
+    temp_points = []
+    temp_connections = connections_list
+    for index in range(len(points_list)):
+        temp_sub_points = []
+        temp_x = rotate_for_x(points_list[index][0], points_list[index][1], points_list[index][2], yaw, pitch,
+                              roll) + x_pos - cam_x
+        temp_y = rotate_for_y(points_list[index][0], points_list[index][1], points_list[index][2], yaw, pitch,
+                              roll) + y_pos - cam_y
+        temp_z = rotate_for_z(points_list[index][0], points_list[index][1], points_list[index][2], yaw, pitch,
+                              roll) + z_pos - cam_z
+        temp_sub_points.append(rotate_for_x(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
+        temp_sub_points.append(rotate_for_y(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
+        temp_sub_points.append(rotate_for_z(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
+        temp_points.append(temp_sub_points)
+    for line in temp_connections:
+        x1 = project_x(temp_points[line[0] - 1][0], temp_points[line[0] - 1][2], focal_length)
+        y1 = project_y(temp_points[line[0] - 1][1], temp_points[line[0] - 1][2], focal_length)
+        x2 = project_x(temp_points[line[1] - 1][0], temp_points[line[1] - 1][2], focal_length)
+        y2 = project_y(temp_points[line[1] - 1][1], temp_points[line[1] - 1][2], focal_length)
+        t.pu()
+        t.goto(x1, y1)
+        t.pd()
+        t.goto(x2, y2)
