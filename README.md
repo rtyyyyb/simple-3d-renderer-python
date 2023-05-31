@@ -132,6 +132,7 @@ for i in range(100000):
     r.render_object(posx, posy, posz + 100, i / 100, 0, 0, cube_points, cube_connections)
     r.next_frame()
 ```
+![the rotated cubes](https://media.discordapp.net/attachments/739225330677448734/1113572956816293928/image.png)
 ### diagonal line
 this will render a diagonal line and the camera will move along it 
 ```py
@@ -172,3 +173,4 @@ for i in range(100000):
         render_cube(j, 0, j)
     r.next_frame()
 ```
+![the daigona line of cubes](https://media.discordapp.net/attachments/739225330677448734/1113572877086769152/image.png?width=1025&height=328)
