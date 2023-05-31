@@ -15,20 +15,21 @@ cam_yaw = 0
 focal_length = 0
 
 
-def set_camera_pos(x, y, z, roll, pitch, yaw, focal_length): #changes the position of the camera
+def set_camera_pos(x, y, z, roll, pitch, yaw, focallength): #changes the position of the camera
     global cam_x
     global cam_y
     global cam_z
     global cam_pitch
     global cam_roll
     global cam_yaw
+    global focal_length
     cam_x = x
     cam_y = y
     cam_z = z
     cam_pitch = pitch
     cam_roll = roll
     cam_yaw = yaw
-    focal_length = focal_length
+    focal_length = focallength
 
 
 def project_x(x, z, focal):  # projection matrix's
