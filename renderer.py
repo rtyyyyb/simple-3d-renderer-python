@@ -14,7 +14,6 @@ cam_roll = 0
 cam_yaw = 0
 focal_length = 0
 
-
 def set_camera_pos(x, y, z, roll, pitch, yaw, focallength):
     global cam_x
     global cam_y
@@ -33,11 +32,11 @@ def set_camera_pos(x, y, z, roll, pitch, yaw, focallength):
 
 
 def project_x(x, z, focal):  # projection matrix's
-    return (x * focal) / (focal + z)
+    return (x * focal) / (focal + z + 0.01)
 
 
 def project_y(y, z, focal):
-    return (y * focal) / (focal + z)
+    return (y * focal) / (focal + z + 0.01)
 
 
 def rotate_for_x(x, y, z, yaw, pitch, roll):  # rotation matrix's yaw = y axis, pitch = x axis, roll = y axis
@@ -77,11 +76,12 @@ def render_object(x_pos, y_pos, z_pos, yaw, pitch, roll, points_list, connection
         temp_sub_points.append(rotate_for_z(temp_x, temp_y, temp_z, cam_yaw, cam_pitch, cam_roll))
         temp_points.append(temp_sub_points)
     for line in temp_connections:
-        x1 = project_x(temp_points[line[0] - 1][0], temp_points[line[0] - 1][2], focal_length)
-        y1 = project_y(temp_points[line[0] - 1][1], temp_points[line[0] - 1][2], focal_length)
-        x2 = project_x(temp_points[line[1] - 1][0], temp_points[line[1] - 1][2], focal_length)
-        y2 = project_y(temp_points[line[1] - 1][1], temp_points[line[1] - 1][2], focal_length)
-        t.pu()
-        t.goto(x1, y1)
-        t.pd()
-        t.goto(x2, y2)
+        if temp_points[line[0] - 1][2] >= -focal_length or temp_points[line[1] - 1][2] >= -focal_length:
+            x1 = project_x(temp_points[line[0] - 1][0], temp_points[line[0] - 1][2], focal_length)
+            y1 = project_y(temp_points[line[0] - 1][1], temp_points[line[0] - 1][2], focal_length)
+            x2 = project_x(temp_points[line[1] - 1][0], temp_points[line[1] - 1][2], focal_length)
+            y2 = project_y(temp_points[line[1] - 1][1], temp_points[line[1] - 1][2], focal_length)
+            t.pu()
+            t.goto(x1, y1)
+            t.pd()
+            t.goto(x2, y2)
